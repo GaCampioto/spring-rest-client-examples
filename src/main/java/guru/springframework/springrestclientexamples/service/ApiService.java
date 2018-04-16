@@ -4,8 +4,7 @@ import guru.springframework.api.domain.User;
 import guru.springframework.api.domain.UserData;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @Service
 public class ApiService {
@@ -16,9 +15,9 @@ public class ApiService {
         this.restTemplate = restTemplate;
     }
 
-    public List<User> getUsers(Integer limit) {
-        return restTemplate
+    public Flux<User> getUsers(Integer limit) {
+        return Flux.fromIterable(restTemplate
                 .getForObject("http://apifaketory.com/api/user?limit=" + limit, UserData.class)
-                .getData();
+                .getData());
     }
 }
